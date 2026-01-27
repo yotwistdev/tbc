@@ -7,72 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
-        :root {
-            --tk-bg: #F2F3F5;
-            --tk-card: #FFFFFF;
-            --tk-blue: #418AE9;
-            --tk-yellow: #FFDD2D;
-        }
         body { font-family: -apple-system, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
-        .tk-shadow { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05); }
-        .ios-tab-blur { backdrop-filter: blur(20px); background: rgba(249, 249, 249, 0.8); }
-        /* Creating the Mastercard/Mir look via CSS */
-        .card-dot-mc { background: linear-gradient(90deg, #eb001b 50%, #f79e1b 50%); }
+        .tk-shadow { box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
+        .ios-tab-blur { backdrop-filter: blur(20px); background: rgba(255, 255, 255, 0.85); }
         .safe-area-bottom { padding-bottom: env(safe-area-inset-bottom); }
+        [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bg-[#F2F3F5] text-black" x-data="{ page: 'main' }">
+<body class="bg-[#F2F3F5] text-black" x-data="{ 
+    page: 'main', 
+    statementLang: 'ru',
+    selectedAccount: 'Black 24 426,12 ₽'
+}">
 
-    <div x-show="page === 'main'" class="px-4 pt-4 pb-32">
+    <div x-show="page === 'main'" x-cloak class="px-4 pt-4 pb-32">
         <div class="flex justify-between items-center mb-6">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-[#C4C5C9] rounded-full flex items-center justify-center text-white font-semibold">М</div>
                 <span class="text-[20px] font-bold">Марина <span class="text-gray-400 font-normal">›</span></span>
             </div>
             <div class="w-10 h-10 bg-[#7B40FF] rounded-full flex items-center justify-center shadow-lg text-lg">🎁</div>
-        </div>
-
-        <div class="relative mb-5">
-            <input type="text" placeholder="Поиск" class="w-full bg-[#E3E4E9] rounded-2xl py-2.5 pl-10 pr-4 outline-none placeholder-[#8E8E93]">
-            <span class="absolute left-3 top-2.5 text-[#8E8E93]">🔍</span>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 mb-4">
-            <div class="bg-white p-4 rounded-[24px] tk-shadow">
-                <p class="font-bold text-[16px] leading-tight">Все операции</p>
-                <p class="text-[13px] text-[#9299A2] mt-1">Трат в январе</p>
-                <p class="font-bold text-[16px] mt-0.5">66 119 ₽</p>
-                <div class="flex w-full h-2.5 rounded-full overflow-hidden mt-3 bg-[#F2F3F5]">
-                    <div class="bg-[#A38CFE]" style="width: 45%"></div>
-                    <div class="bg-[#79D7F5]" style="width: 25%"></div>
-                    <div class="bg-[#4CD7B8]" style="width: 15%"></div>
-                </div>
-            </div>
-            <div class="bg-white p-4 rounded-[24px] tk-shadow relative">
-                <div class="flex justify-between items-start">
-                    <p class="font-bold text-[16px] leading-tight">Кэшбэк<br>и бонусы</p>
-                    <span class="bg-[#F64E4E] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-white">1</span>
-                </div>
-                <div class="flex gap-2 mt-4">
-                    <div class="w-8 h-8 rounded-full bg-blue-900 overflow-hidden"><img src="https://logo.clearbit.com/vtb.ru" class="scale-125"></div>
-                    <div class="w-8 h-8 rounded-full bg-white border border-gray-100 p-1"><img src="https://logo.clearbit.com/magnit.ru"></div>
-                    <div class="w-8 h-8 rounded-full bg-[#1DB954] flex items-center justify-center text-[10px] text-white font-bold">5</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-between mb-6">
-            <template x-for="item in [
-                {icon: '📲', label: 'Перевести по телефону'},
-                {icon: '➕', label: 'Пополнить Black'},
-                {icon: '⇄', label: 'Между счетами'},
-                {icon: '🔳', label: 'Сканировать QR-код'}
-            ]">
-                <div class="flex flex-col items-center w-[22%]">
-                    <div class="w-14 h-14 bg-white rounded-2xl tk-shadow flex items-center justify-center text-blue-500 text-xl mb-1.5" x-text="item.icon"></div>
-                    <span class="text-[10px] text-center font-medium leading-tight text-gray-800" x-text="item.label"></span>
-                </div>
-            </template>
         </div>
 
         <div @click="page = 'account'" class="bg-white p-5 rounded-[28px] tk-shadow mb-4 active:scale-[0.98] transition-transform">
@@ -86,77 +40,132 @@
                 </div>
                 <div class="bg-[#333333] text-white text-[11px] px-2 py-0.5 rounded-full flex items-center font-bold">👑 0 Р</div>
             </div>
-            <div class="flex gap-2 mt-6">
-                <div class="w-11 h-7 bg-[#1C1C1E] rounded-md p-1 relative">
-                    <span class="text-[7px] text-white opacity-60">2637</span>
-                    <div class="card-dot-mc w-3 h-2 absolute bottom-1 right-1 rounded-full"></div>
-                </div>
-                <div class="w-11 h-7 bg-[#1C1C1E] rounded-md p-1 relative border border-gray-700">
-                    <span class="text-[7px] text-white opacity-60">1212</span>
-                    <div class="absolute bottom-1 right-1 text-[6px] text-white font-bold italic">МИР</div>
-                </div>
-                <div class="w-11 h-7 bg-[#E3E4E9] rounded-md flex items-center justify-center text-gray-400 text-sm">+</div>
-            </div>
+        </div>
+        <p class="text-center text-gray-400 mt-10">Тут основная страница...</p>
+    </div>
+
+    <div x-show="page === 'more'" x-cloak class="pb-32">
+        <div class="bg-white pt-12 pb-4 px-4 text-center border-b border-gray-100">
+            <h1 class="text-lg font-bold">Ещё</h1>
         </div>
 
-        <div class="bg-white p-5 rounded-[28px] tk-shadow flex gap-4 relative">
-            <div class="flex-1">
-                <p class="font-bold text-[16px] leading-tight">Разрешите обновлять ваши данные через Госуслуги</p>
-                <p class="text-[13px] text-[#9299A2] mt-1">Это нужно по закону № 115-ФЗ</p>
+        <div class="bg-white mx-4 mt-4 p-3 rounded-2xl flex justify-around text-[13px] tk-shadow">
+            <div><span class="text-gray-400">USD</span> <span class="font-bold">81,80</span></div>
+            <div><span class="text-gray-400">EUR</span> <span class="font-bold">96,25</span></div>
+            <div><span class="text-gray-400">GBP</span> <span class="font-bold">125,65</span></div>
+        </div>
+
+        <div class="px-4 mt-4 space-y-3">
+            <div class="bg-white p-5 rounded-[24px] tk-shadow flex justify-between items-center">
+                <div class="pr-10">
+                    <p class="font-bold text-[17px]">Установить приложение Т-Банка на iPhone</p>
+                    <p class="text-sm text-gray-400 mt-1">В нем больше функций, чем в веб-версии</p>
+                </div>
+                <div class="w-10 h-10 bg-[#FFDD2D] rounded-xl flex items-center justify-center font-black text-xl">T</div>
             </div>
-            <div class="w-14 h-14 bg-[#FFDD2D] rounded-xl flex items-center justify-center font-black text-2xl">T</div>
-            <button class="absolute top-2 right-3 text-gray-300 text-sm">✕</button>
+
+            <div class="bg-white p-5 rounded-[24px] tk-shadow flex justify-between items-center">
+                <p class="font-bold text-[17px]">Банкоматы и точки пополнения</p>
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">🏧</div>
+            </div>
+
+            <div @click="page = 'certificates_list'" class="bg-white p-5 rounded-[24px] tk-shadow flex justify-between items-center cursor-pointer active:bg-gray-50">
+                <div>
+                    <p class="font-bold text-[17px]">Заказать справку</p>
+                    <p class="text-sm text-gray-400 mt-1">Об остатке на счете и другие</p>
+                </div>
+                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">📄</div>
+            </div>
         </div>
     </div>
 
-    <div x-show="page === 'account'" x-transition:enter="transition ease-out duration-300 transform translate-y-full" x-transition:enter-end="transform translate-y-0" class="fixed inset-0 z-50 bg-[#1C1C1E] overflow-y-auto">
-        <div class="p-4 flex items-center text-white">
-            <button @click="page = 'main'" class="text-3xl pr-4">‹</button>
+    <div x-show="page === 'certificates_list'" x-cloak class="min-h-screen bg-white">
+        <div class="p-4 flex items-center border-b border-gray-50">
+            <button @click="page = 'more'" class="text-blue-500 text-2xl pr-4">‹</button>
+            <h1 class="text-lg font-bold w-full text-center pr-8">Справки</h1>
         </div>
-        <div class="px-6 py-4">
-            <div class="flex items-center gap-2 mb-1">
-                <span class="text-gray-400 text-lg">Black</span>
-                <span class="text-gray-500">✎</span>
+
+        <div class="p-4 space-y-6">
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white text-xl">📄</div>
+                <div>
+                    <p class="font-bold">С движением средств</p>
+                    <p class="text-sm text-gray-400">Выписка за период</p>
+                </div>
             </div>
-            <h1 class="text-4xl font-bold text-white">24 426,12 ₽</h1>
-            
-            <div class="flex gap-4 mt-8">
-                 <div class="w-20 h-12 bg-gray-800 rounded-xl"></div>
-                 <div class="w-20 h-12 bg-gray-800 rounded-xl"></div>
+            <div @click="page = 'balance_request'" class="flex items-start gap-4 cursor-pointer active:opacity-50">
+                <div class="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white text-xl">📊</div>
+                <div>
+                    <p class="font-bold">О доступном остатке</p>
+                    <p class="text-sm text-gray-400">Подходит для получения визы</p>
+                </div>
             </div>
+            </div>
+    </div>
+
+    <div x-show="page === 'balance_request'" x-cloak class="min-h-screen bg-white flex flex-col">
+        <div class="p-4 flex items-center">
+            <button @click="page = 'certificates_list'" class="text-blue-500 text-2xl pr-4">‹</button>
         </div>
         
-        <div class="bg-[#F2F3F5] mt-8 rounded-t-[32px] min-h-screen p-4">
-            <div class="bg-white rounded-3xl p-6 tk-shadow flex justify-between text-center">
-                <div class="flex-1"><div class="text-blue-500 text-2xl">🔵</div><p class="text-[11px] text-blue-500 font-bold">Оплатить</p></div>
-                <div class="flex-1"><div class="text-blue-500 text-2xl">⊕</div><p class="text-[11px] text-blue-500 font-bold">Пополнить</p></div>
-                <div class="flex-1"><div class="text-blue-500 text-2xl">➜</div><p class="text-[11px] text-blue-500 font-bold">Перевести</p></div>
+        <div class="px-6 flex-grow">
+            <h1 class="text-3xl font-bold mb-8">Справка о доступном остатке</h1>
+            
+            <p class="text-gray-500 font-medium mb-2">По какому счету</p>
+            <div class="bg-[#F2F3F5] p-4 rounded-2xl flex items-center justify-between mb-8">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold text-xs">₽</div>
+                    <div>
+                        <p class="text-sm text-gray-400">Black</p>
+                        <p class="font-bold">24 426,12 ₽</p>
+                    </div>
+                </div>
+                <span class="text-gray-300">⌄</span>
             </div>
+
+            <p class="text-gray-500 font-medium mb-3">На каком языке</p>
+            <div class="flex gap-2">
+                <button 
+                    @click="statementLang = 'ru'" 
+                    :class="statementLang === 'ru' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-500'"
+                    class="px-6 py-2 rounded-full font-bold transition-colors">
+                    Русский
+                </button>
+                <button 
+                    @click="statementLang = 'en'" 
+                    :class="statementLang === 'en' ? 'bg-blue-500 text-white' : 'bg-gray-100 text-gray-500'"
+                    class="px-6 py-2 rounded-full font-bold transition-colors">
+                    Английский
+                </button>
+            </div>
+        </div>
+
+        <div class="p-4 pb-10">
+            <button 
+                class="w-full bg-[#FFDD2D] py-4 rounded-2xl font-bold text-[17px] active:scale-[0.98] transition-transform"
+                @click="alert('Generating ' + statementLang + ' PDF...')">
+                Заказать справку
+            </button>
         </div>
     </div>
 
-    <nav class="fixed bottom-0 w-full ios-tab-blur border-t border-gray-200 safe-area-bottom flex justify-around py-2 z-40">
-        <div class="flex flex-col items-center relative">
-            <div class="text-2xl text-blue-600">🛡️</div>
-            <span class="text-[10px] text-blue-600 font-medium">Главная</span>
-            <span class="absolute top-0 right-0 bg-red-500 text-white text-[9px] px-1 rounded-full border-2 border-white">1</span>
+    <nav x-show="['main', 'more'].includes(page)" class="fixed bottom-0 w-full ios-tab-blur border-t border-gray-200 safe-area-bottom flex justify-around py-2 z-40">
+        <div @click="page = 'main'" class="flex flex-col items-center cursor-pointer" :class="page === 'main' ? 'text-blue-600' : 'text-gray-400'">
+            <div class="text-2xl">🛡️</div>
+            <span class="text-[10px] font-medium">Главная</span>
         </div>
-        <div class="flex flex-col items-center opacity-40">
-            <div class="text-2xl">🔘</div>
-            <span class="text-[10px]">Платежи</span>
+        <div class="flex flex-col items-center text-gray-400 opacity-60">
+            <div class="text-2xl">🔘</div><span class="text-[10px]">Платежи</span>
         </div>
-        <div class="flex flex-col items-center opacity-40">
-            <div class="text-2xl">💠</div>
-            <span class="text-[10px]">Город</span>
+        <div class="flex flex-col items-center text-gray-400 opacity-60">
+            <div class="text-2xl">💠</div><span class="text-[10px]">Город</span>
         </div>
-        <div class="flex flex-col items-center opacity-40 relative">
-            <div class="text-2xl">💬</div>
-            <span class="text-[10px]">Чат</span>
-            <span class="absolute top-0 right-0 bg-red-500 text-white text-[9px] px-1 rounded-full border-2 border-white">20</span>
+        <div class="flex flex-col items-center text-gray-400 opacity-60">
+            <div class="text-2xl">💬</div><span class="text-[10px]">Чат</span>
         </div>
-        <div class="flex flex-col items-center opacity-40">
+        <div @click="page = 'more'" class="flex flex-col items-center cursor-pointer" :class="page === 'more' ? 'text-blue-600' : 'text-gray-400'">
             <div class="text-2xl">⋯</div>
-            <span class="text-[10px]">Еще</span>
+            <span class="text-[10px] font-medium">Ещё</span>
         </div>
     </nav>
 
