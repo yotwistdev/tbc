@@ -246,13 +246,11 @@
         <div class="px-6 flex-grow">
             <h1 class="text-[28px] font-extrabold mb-8 leading-tight">Справка о доступном остатке</h1>
             <div class="flex gap-2">
-                <button @click="statementLang = 'ru'" :class="statementLang === 'ru' ? 'bg-[#418AE9] text-white' : 'bg-[#F2F3F5] text-gray-500'" class="px-6 py-2.5 rounded-full font-bold">Русский</button>
-                <button @click="statementLang = 'en'" :class="statementLang === 'en' ? 'bg-[#418AE9] text-white' : 'bg-[#F2F3F5] text-gray-500'" class="px-6 py-2.5 rounded-full font-bold">Английский</button>
+                <button @click="lang = 'ru'" :class="lang === 'ru' ? 'bg-[#418AE9] text-white' : 'bg-[#F2F3F5] text-gray-500'" class="px-6 py-2.5 rounded-full font-bold transition-colors">Русский</button>
+                <button @click="lang = 'en'" :class="lang === 'en' ? 'bg-[#418AE9] text-white' : 'bg-[#F2F3F5] text-gray-500'" class="px-6 py-2.5 rounded-full font-bold transition-colors">Английский</button>
             </div>
         </div>
-        <div class="p-6 pb-12">
-            <button @click="runPDF()" class="w-full bg-[#FFDD2D] py-4 rounded-[20px] font-bold text-[17px]">Заказать справку</button>
-        </div>
+        <div class="p-6 pb-12"><button @click="runPDF()" class="w-full bg-[#FFDD2D] py-4 rounded-[20px] font-bold text-[17px]">Заказать справку</button></div>
     </div>
 
     <nav x-show="['main', 'more', 'account_detail'].includes(page)" class="fixed bottom-0 w-full ios-tab-blur border-t border-gray-100 safe-area-bottom flex justify-around py-2 z-[70]">
@@ -273,7 +271,7 @@
             return {
                 page: 'main',
                 history: 'more',
-                lang: 'ru',
+                lang: 'en', // Matches standard visa requirements
                 runPDF() {
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
