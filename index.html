@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>T-Clone Final</title>
+    <title>T-Clone Refined</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -118,7 +118,6 @@
         <div class="px-6 py-2">
             <div class="flex items-center gap-2 text-white/70 text-[17px]">Black <span>✎</span></div>
             <h1 class="text-[34px] font-bold mt-1 tracking-tight">24 426,12 ₽</h1>
-            
             <div class="flex gap-3 mt-8 mb-6">
                 <div class="w-[52px] h-[34px] bg-[#111111] rounded-md p-1 relative border border-white/10">
                     <span class="text-[7px] text-white/60">2637</span>
@@ -131,7 +130,6 @@
                 <div class="w-[52px] h-[34px] bg-[#333333] rounded-md flex items-center justify-center text-white/60 text-xl font-light">+</div>
             </div>
         </div>
-
         <div class="bg-[#F2F3F5] rounded-t-[32px] min-h-screen text-black pb-32">
             <div class="bg-white rounded-[24px] mx-4 -mt-4 p-5 tk-shadow flex justify-around text-center mb-4">
                 <div class="flex flex-col items-center gap-2">
@@ -186,23 +184,65 @@
     </div>
 
     <div x-show="page === 'certificates_list'" x-cloak class="min-h-screen bg-white">
-        <div class="p-4 flex items-center border-b border-gray-50">
-            <button @click="page = (history === 'account' ? 'account_detail' : 'more')" class="text-blue-500 text-3xl pr-4">‹</button>
-            <h1 class="text-lg font-bold w-full text-center pr-8">Справки</h1>
+        <div class="p-4 flex items-center">
+            <button @click="page = (history === 'account' ? 'account_detail' : 'more')" class="text-[#418AE9] text-3xl pr-4">‹</button>
+            <h1 class="text-[17px] font-bold w-full text-center pr-8">Справки</h1>
         </div>
-        <div class="p-4">
-            <div @click="page = 'balance_request'" class="flex items-center gap-4 py-4 border-b border-gray-100 cursor-pointer">
-                <div class="w-11 h-11 bg-blue-500 rounded-xl flex items-center justify-center text-white text-xl">📊</div>
-                <div class="flex-1 flex justify-between items-center">
-                    <div><p class="font-bold">О доступном остатке</p><p class="text-[13px] text-gray-400">Подходит для получения визы</p></div>
-                    <span class="text-gray-200 text-xl">›</span>
+        
+        <div class="px-4 py-2 flex flex-col gap-1">
+            <div class="flex items-center gap-4 py-3 cursor-pointer">
+                <div class="w-10 h-10 bg-[#418AE9] rounded-full flex items-center justify-center text-white text-xl shadow-sm">🔄</div>
+                <div>
+                    <p class="text-[16px] font-medium leading-snug">С движением средств</p>
+                    <p class="text-[13px] text-gray-400">Выписка за период</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 py-3 cursor-pointer">
+                <div class="w-10 h-10 bg-[#418AE9] rounded-full flex items-center justify-center text-white text-xl shadow-sm">👤</div>
+                <div>
+                    <p class="text-[16px] font-medium leading-snug">Заявление на перевод зарплаты</p>
+                    <p class="text-[13px] text-gray-400">Шаблон для перевода зарплаты на карту</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 py-3 cursor-pointer">
+                <div class="w-10 h-10 bg-[#418AE9] rounded-full flex items-center justify-center text-white text-xl shadow-sm">ℹ️</div>
+                <div>
+                    <p class="text-[16px] font-medium leading-snug">Реквизиты счета</p>
+                    <p class="text-[13px] text-gray-400">Для переводов</p>
+                </div>
+            </div>
+            <div @click="page = 'balance_request'" class="flex items-center gap-4 py-3 cursor-pointer">
+                <div class="w-10 h-10 bg-[#418AE9] rounded-full flex items-center justify-center text-white text-xl shadow-sm">📊</div>
+                <div>
+                    <p class="text-[16px] font-medium leading-snug">О доступном остатке</p>
+                    <p class="text-[13px] text-gray-400">Подходит для получения визы</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 py-3 cursor-pointer">
+                <div class="w-10 h-10 bg-[#418AE9] rounded-full flex items-center justify-center text-white text-xl shadow-sm">📈</div>
+                <div>
+                    <p class="text-[16px] font-medium leading-snug">2-НДФЛ</p>
+                    <p class="text-[13px] text-gray-400">О доходах</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 py-3 cursor-pointer">
+                <div class="w-10 h-10 bg-[#418AE9] rounded-full flex items-center justify-center text-white text-xl shadow-sm">📜</div>
+                <div>
+                    <p class="text-[16px] font-medium leading-snug">О договоре с банком</p>
+                    <p class="text-[13px] text-gray-400">Подтверждение заключения договора</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4 py-3 cursor-pointer">
+                <div class="w-10 h-10 bg-[#418AE9] rounded-full flex items-center justify-center text-white text-xl shadow-sm">💬</div>
+                <div>
+                    <p class="text-[16px] font-medium leading-snug">Другая справка</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div x-show="page === 'balance_request'" x-cloak class="min-h-screen bg-white flex flex-col">
-        <div class="p-4"><button @click="page = 'certificates_list'" class="text-blue-500 text-3xl">‹</button></div>
+        <div class="p-4"><button @click="page = 'certificates_list'" class="text-[#418AE9] text-3xl">‹</button></div>
         <div class="px-6 flex-grow">
             <h1 class="text-[28px] font-extrabold mb-8 leading-tight">Справка о доступном остатке</h1>
             <div class="flex gap-2">
