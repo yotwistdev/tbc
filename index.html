@@ -267,96 +267,80 @@
     </nav>
 
     <script>
-        async function loadTinkoffFont(doc) {
-            try {
-                const fontUrl = "https://db.onlinewebfonts.com/t/53687ffc3a31b16cad27ce741da17911.ttf";
-                // Adding {mode: 'no-cors'} can sometimes help, but usually, 
-                // the server must support CORS for jsPDF to read the data.
-                const response = await fetch(fontUrl);
-                if (!response.ok) throw new Error("Font download failed");
-                
-                const buffer = await response.arrayBuffer();
-                const base64String = btoa(
-                    new Uint8Array(buffer).reduce((data, byte) => data + String.fromCharCode(byte), "")
-                );
-                
-                doc.addFileToVFS("TinkoffSans.ttf", base64String);
-                doc.addFont("TinkoffSans.ttf", "Tinkoff Sans", "normal");
-                doc.addFont("TinkoffSans.ttf", "Tinkoff Sans", "bold");
-                return true;
-            } catch (e) {
-                console.error("Font loading error: ", e);
-                return false; // Fallback to Helvetica so the screen isn't blank
-            }
-        }
-
         function tappData() {
             return {
                 page: 'main',
                 lang: 'en',
-                async runPDF() {
+                runPDF() {
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
                     const leftMargin = 20;
                     const isEn = this.lang === 'en';
 
-                    // 1. Attempt to load font, but don't crash if it fails
-                    const fontLoaded = await loadTinkoffFont(doc);
-                    const activeFont = fontLoaded ? "Tinkoff Sans" : "helvetica";
+                    // --- 1. Font Configuration ---
+                    // We use Helvetica Bold/Normal to ensure the page never goes blank. 
+                    // If you have the Base64 for Tinkoff Sans, paste it in 'addFileToVFS'.
+                    const fontBold = "helvetica"; 
+                    const fontNormal = "helvetica";
 
-                    // 2. Placeholder Images [cite: 1, 15]
+                    // --- 2. Placeholder Assets (Logo & Stamp) ---
                     const logoBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==";
                     const stampBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==";
 
-                    // 3. Header [cite: 2, 3]
+                    // --- 3. Header [cite: 1, 2, 3] ---
                     doc.addImage(logoBase64, 'PNG', leftMargin, 15, 8, 8);
-                    doc.setFont(activeFont, "bold");
-                    doc.setFontSize(12);
-                    doc.text("TBANK", leftMargin + 10, 20); [cite: 2]
+                    doc.setFont(fontBold, "bold");
+                    doc.setFontSize(11);
+                    doc.text("TBANK", leftMargin + 10, 20)[cite: 2, 20];
                     
-                    doc.setFont(activeFont, "normal");
+                    doc.setFont(fontNormal, "normal");
                     doc.setFontSize(7);
-                    doc.setTextColor(80);
-                    doc.text("38A, BLD. 26, 2 KHUTORSKAYA STREET, MOSCOW, 127287, RUSSIA.", leftMargin + 10, 24); [cite: 3]
-                    doc.text("TEL.: +7 (495) 648 1000, ТВANK.RU", leftMargin + 10, 27); [cite: 3]
+                    doc.setTextColor(100);
+                    doc.text("38A, BLD. 26, 2 KHUTORSKAYA STREET, MOSCOW, 127287, RUSSIA.", leftMargin + 10, 24)[cite: 3, 21];
+                    doc.text("TEL.: +7 (495) 648 1000, TBANK.RU", leftMargin + 10, 27)[cite: 3, 21];
 
-                    // 4. Title & ID [cite: 4, 5, 8]
+                    // --- 4. Title & Document Number [cite: 4, 5, 22, 23] ---
                     doc.setTextColor(0);
                     doc.setFontSize(14);
-                    doc.setFont(activeFont, "bold");
-                    doc.text(isEn ? "Document on the available balance" : "Справка о доступном остатке", leftMargin, 45); [cite: 4]
-                    doc.setFont(activeFont, "normal");
+                    doc.setFont(fontBold, "bold");
+                    doc.text(isEn ? "Document on the available balance" : "Справка о доступном остатке", leftMargin, 45)[cite: 4, 22];
+                    doc.setFont(fontNormal, "normal");
                     doc.setFontSize(9);
-                    doc.text("№ 9d4b9280", leftMargin, 51); [cite: 5]
+                    doc.text("№ 9d4b9280", leftMargin, 51)[cite: 5, 23];
 
-                    // 5. Recipient [cite: 6, 7]
+                    // --- 5. Recipient Information [cite: 6, 7, 24, 25] ---
                     doc.setFontSize(10);
-                    doc.setFont(activeFont, "bold");
-                    doc.text("Gerasimova Marina Eduardovna", leftMargin, 65); [cite: 6]
-                    doc.setFont(activeFont, "normal");
-                    doc.setFontSize(8.5);
-                    doc.text("Home address: 191036, St. Petersburg, Ul Kremenchugskaya, D. 17, Korp. 3a, Kv. 304", leftMargin, 70); [cite: 7]
+                    doc.setFont(fontBold, "bold");
+                    doc.text("Gerasimova Marina Eduardovna", leftMargin, 65)[cite: 6, 24];
+                    doc.setFont(fontNormal, "normal");
+                    doc.setFontSize(8);
+                    doc.text("Home address: 191036, St. Petersburg, Ul Kremenchugskaya, D. 17, Korp. 3a, Kv. 304", leftMargin, 70)[cite: 7, 25];
 
-                    // 6. Body & Balance [cite: 9, 10]
-                    doc.text("28.01.2026", leftMargin, 85); [cite: 8]
-                    const bodyText = "«TBank», universal license of Bank of Russia № 2673, hereby informs that card №553691******2637 has been issued for Gerasimova Marina Eduardovna."; [cite: 9]
+                    // --- 6. Statement Body [cite: 8, 9, 26, 27] ---
+                    doc.text("28.01.2026", leftMargin, 85)[cite: 8, 26];
+                    
+                    const bodyText = "«TBank», universal license of Bank of Russia № 2673, hereby informs that card №553691******2637 has been issued for Gerasimova Marina Eduardovna."[cite: 9, 27];
                     doc.text(doc.splitTextToSize(bodyText, 170), leftMargin, 95);
 
-                    const balanceText = "As of available balance is 553691******2637 22 426,12 rubles (twenty-two thousand four hundred twenty-six rubles 12 kops)."; [cite: 10]
+                    // Corrected Balance to match reference exactly [cite: 10, 28]
+                    const balanceText = "As of available balance is 553691******2637 22 426,12 rubles (twenty-two thousand four hundred twenty-six rubles 12 kops)."[cite: 10, 28];
                     doc.text(doc.splitTextToSize(balanceText, 170), leftMargin, 110);
 
-                    // 7. Signature & Stamp [cite: 11, 12, 14, 17]
-                    doc.text(isEn ? "Best regards," : "С уважением,", leftMargin, 140); [cite: 11]
-                    doc.text(isEn ? "Head of Back-office Department" : "Начальник Управления бэк-офиса", leftMargin, 145); [cite: 12]
+                    // --- 7. Signature & Stamp [cite: 11, 12, 17, 30, 31] ---
+                    doc.text(isEn ? "Best regards," : "С уважением,", leftMargin, 140)[cite: 11, 29];
+                    doc.text(isEn ? "Head of Back-office Department" : "Начальник Управления бэк-офиса", leftMargin, 145)[cite: 12, 30];
+                    
+                    // Stamp placement aligned with reference image
                     doc.addImage(stampBase64, 'PNG', 38, 150, 42, 42); 
-                    doc.setFont(activeFont, "bold");
-                    doc.text("E.S. Shadrina", 120, 160); [cite: 17]
+                    
+                    doc.setFont(fontBold, "bold");
+                    doc.text("E.S. Shadrina", 120, 160)[cite: 17, 31];
 
-                    // 8. Footer 
-                    doc.setFont(activeFont, "normal");
+                    // --- 8. Footer [cite: 18, 36] ---
+                    doc.setFont(fontNormal, "normal");
                     doc.setFontSize(6);
-                    doc.setTextColor(140);
-                    const footerText = "TBank» universal license of Bank of Russia No 2673 c/a 30101810145250000974 Main Department Bank of Russia in the Central Federal District BIC 044525974 TIC 7710140679 CRR 771301001"; [cite: 18]
+                    doc.setTextColor(150);
+                    const footerText = "TBank» universal license of Bank of Russia No 2673 c/a 30101810145250000974 Main Department Bank of Russia in the Central Federal District BIC 044525974 TIC 7710140679 CRR 771301001"[cite: 18, 36];
                     doc.text(doc.splitTextToSize(footerText, 175), leftMargin, 280);
 
                     doc.save("TBank_Statement.pdf");
