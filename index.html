@@ -271,7 +271,7 @@
             return {
                 page: 'main',
                 history: 'more',
-                lang: 'en',
+                lang: 'en', // Matches standard visa requirements
                 runPDF() {
                     const { jsPDF } = window.jspdf;
                     const doc = new jsPDF({ unit: 'mm', format: 'a4' });
@@ -279,78 +279,83 @@
                     const leftMargin = 20;
 
                     // 1. Logo & Header [cite: 1, 2, 3]
-                    // Placeholder: Yellow rectangle + Logo text
                     doc.setFillColor(255, 221, 45);
                     doc.rect(leftMargin, 15, 8, 8, 'F');
                     doc.setFont("helvetica", "bold");
                     doc.setFontSize(8);
-                    doc.setTextColor(0);
                     doc.text("T", leftMargin + 2.5, 21);
                     
                     doc.setFontSize(12);
-                    doc.text("TBANK", leftMargin + 10, 20); [cite: 2]
+                    doc.text("TBANK", leftMargin + 10, 20);
                     doc.setFont("helvetica", "normal");
                     doc.setFontSize(7);
                     doc.setTextColor(80);
-                    doc.text("38A, BLD. 26, 2 KHUTORSKAYA STREET, MOSCOW, 127287, RUSSIA.", leftMargin + 10, 24); [cite: 3]
-                    doc.text("TEL.: +7 (495) 648 1000, TBANK.RU", leftMargin + 10, 27); [cite: 3]
+                    doc.text("38A, BLD. 26, 2 KHUTORSKAYA STREET, MOSCOW, 127287, RUSSIA.", leftMargin + 10, 24);
+                    doc.text("TEL.: +7 (495) 648 1000, TBANK.RU", leftMargin + 10, 27);
 
                     // 2. Title and Document Number [cite: 4, 5]
                     doc.setTextColor(0);
                     doc.setFontSize(14);
                     doc.setFont("helvetica", "bold");
-                    doc.text(isEn ? "Document on the available balance" : "Справка о доступном остатке", leftMargin, 45); [cite: 4]
+                    doc.text(isEn ? "Document on the available balance" : "Справка о доступном остатке", leftMargin, 45);
                     doc.setFont("helvetica", "normal");
                     doc.setFontSize(9);
-                    doc.text("№ 9d4b9280", leftMargin, 51); [cite: 5]
+                    doc.text("No 9d4b9280", leftMargin, 51);
 
                     // 3. Recipient Info [cite: 6, 7]
                     doc.setFontSize(10);
                     doc.setFont("helvetica", "bold");
-                    doc.text("Gerasimova Marina Eduardovna", leftMargin, 65); [cite: 6]
+                    doc.text("Gerasimova Marina Eduardovna", leftMargin, 65);
                     doc.setFont("helvetica", "normal");
                     doc.setFontSize(8.5);
-                    doc.text("Home address: 191036, St. Petersburg, Ul Kremenchugskaya, D. 17, Korp. 3a, Kv. 304", leftMargin, 70); [cite: 7]
+                    doc.text("Home address: 191036, St. Petersburg, Ul Kremenchugskaya, D. 17, Korp. 3a, Kv. 304", leftMargin, 70);
 
                     // 4. Date and Body Text [cite: 8, 9, 10]
-                    const date = "28.01.2026"; [cite: 8]
+                    const date = "28.01.2026";
                     doc.text(date, leftMargin, 85);
                     
                     const bodyText = isEn 
-                        ? "«TBank», universal license of Bank of Russia № 2673, hereby informs that card №553691******2637 has been issued for Gerasimova Marina Eduardovna." [cite: 9]
+                        ? "«TBank», universal license of Bank of Russia No 2673, hereby informs that card No553691******2637 has been issued for Gerasimova Marina Eduardovna."
                         : "АО «ТБанк», универсальная лицензия Банка России № 2673, настоящим сообщает, что карта №553691******2637 выпущена на имя Gerasimova Marina Eduardovna.";
                     
                     const splitBody = doc.splitTextToSize(bodyText, 170);
                     doc.text(splitBody, leftMargin, 95);
 
-                    // Corrected Balance to match reference exactly 
                     const balanceText = isEn
-                        ? "As of available balance is 553691******2637 22 426,12 rubles (twenty-two thousand four hundred twenty-six rubles 12 kops)." [cite: 10]
-                        : "По состоянию на текущий момент доступный остаток составляет 22 426,12 рублей (двадцать две тысячи четыреста двадцать шесть рублей 12 коп.).";
+                        ? "As of available balance is 553691******2637 1 240 426.12 rubles (one million twenty-four hundreed thousand four hundred twenty-six rubles 12 kops)."
+                        : "По состоянию на текущий момент доступный остаток составляет 1 240 426,12 рублей (один миллион двести сорок тысяч четыреста двадцать шесть рублей 12 коп.).";
                     
                     doc.text(doc.splitTextToSize(balanceText, 170), leftMargin, 110);
 
                     // 5. Signature Section [cite: 11, 12, 17]
-                    doc.text(isEn ? "Best regards," : "С уважением,", leftMargin, 140); [cite: 11]
-                    doc.text(isEn ? "Head of Back-office Department" : "Начальник Управления бэк-офиса", leftMargin, 145); [cite: 12]
+                    doc.text(isEn ? "Best regards," : "С уважением,", leftMargin, 140);
+                    doc.text(isEn ? "Head of Back-office Department" : "Начальник Управления бэк-офиса", leftMargin, 145);
                     doc.setFont("helvetica", "bold");
-                    doc.text("E.S. Shadrina", 120, 160); [cite: 17]
+                    doc.text("E.S. Shadrina", 120, 160);
 
-                    // 6. Stamp Placeholder (Geometric) [cite: 13, 14, 15]
+                    // 6. Refined Stamp [cite: 13, 14, 15, 16]
                     doc.setDrawColor(30, 80, 160);
                     doc.setLineWidth(0.4);
-                    doc.circle(55, 165, 18, 'S'); 
-                    doc.circle(55, 165, 14, 'S');
+                    doc.circle(55, 165, 18, 'S'); // Outer circle
+                    doc.circle(55, 165, 14, 'S'); // Inner circle
                     doc.setFontSize(5);
                     doc.setTextColor(30, 80, 160);
-                    doc.text("Акционерное общество «ТБанк»", 42, 154, { angle: 10 }); [cite: 14]
-                    doc.text("г. Москва", 52, 178); [cite: 15]
+                    doc.text("Акционерное общество «ТБанк»", 42, 154, { angle: 10 });
+                    doc.text("г. Москва", 52, 178);
+                    doc.setFontSize(6);
+                    doc.text("Управление Бэк-офис", 45, 164);
+                    doc.text("Для документов", 47, 168);
+                    
+                    // Faux signature scribble [cite: 16]
+                    doc.setLineWidth(0.2);
+                    doc.line(45, 165, 65, 160); 
+                    doc.line(48, 168, 62, 158);
 
-                    // 7. Footer [cite: 18]
+                    // 7. Detailed Footer 
                     doc.setFont("helvetica", "normal");
                     doc.setFontSize(6);
                     doc.setTextColor(140);
-                    const footerText = "TBank» universal license of Bank of Russia № 2673 c/a 30101810145250000974 Main Department Bank of Russia in the Central Federal District BIC 044525974 TIC 7710140679 CRR 771301001"; [cite: 18]
+                    const footerText = "TBank» universal license of Bank of Russia No 2673 c/a 30101810145250000974 Main Department Bank of Russia in the Central Federal District BIC 044525974 TIC 7710140679 CRR 771301001";
                     doc.text(doc.splitTextToSize(footerText, 170), leftMargin, 280);
 
                     doc.save("TBank_Statement.pdf");
